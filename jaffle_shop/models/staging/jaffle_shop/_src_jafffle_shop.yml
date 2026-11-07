@@ -1,9 +1,18 @@
 sources:
   - name: jaffle_shop
+    description: A CDC clone of postgress table
     database: raw
     schema: jaffle_shop
     tables:
       - name: orders
+        description: Raw Customers data
+        columns:
+          - name: id
+            description: primary key from the source 
+            data_tests:
+             - unique
+             - not_null
+
         config:
           freshness:
             warn_after:

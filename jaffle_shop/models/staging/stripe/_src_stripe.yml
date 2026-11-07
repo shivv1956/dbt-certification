@@ -1,5 +1,6 @@
 sources:
  - name: stripe
+   description: A clone of the payments table from stripe
    database: raw 
    schema: stripe 
    tables:

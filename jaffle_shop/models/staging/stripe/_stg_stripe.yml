@@ -1,0 +1,15 @@
+models:
+ - name: stg_stripe__payments
+   description: staging table on top of the stripe payments
+   columns:
+    - name: payments_id
+      description: primary_key
+      data_tests:
+        - unique
+        - not_null
+    - name: payment_method
+      description: "{{doc('payment_method')}}"
+      data_tests:
+        - accepted_values:
+            arguments:
+              values: ['credit_card','coupon','bank_transfer','gift_card']
