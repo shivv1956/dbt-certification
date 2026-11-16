@@ -1,24 +1,41 @@
-WITH orders AS (
-    SELECT * FROM {{ ref('stg_jaffle_shop__orders') }}
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+with orders as  (
+    select * from {{ ref ('stg_jaffle_shop__orders' )}}
 ),
 
-payments AS (
-    SELECT * FROM {{ ref('stg_stripe__payments') }}
+payments as (
+    select * from {{ ref ('stg_stripe__payments') }}
 ),
-order_payments AS (
-    SELECT order_id,
-        SUM(
-            CASE WHEN payment_status = 'success' THEN payment_amount END 
-        ) AS amount
-    FROM payments 
-    GROUP BY order_id
+
+order_payments as (
+    select
+        order_id,
+        sum (case when status = 'success' then amount end) as amount
+
+    from payments
+    group by 1
 ),
-final AS (
-    select 
+
+ final as (
+
+    select
         orders.order_id,
         orders.customer_id,
-        coalesce(order_payments.amount,0) AS amount 
-        FROM orders 
-        LEFT JOIN order_payments using (order_id)
+        orders.order_date,
+        coalesce (order_payments.amount, 0) as amount
+
+    from orders
+    left join order_payments using (order_id)
 )
-SELECT * FROM final
+
+select * from final
+
+
+{% if is_incremental() %}
+where
+order_date >= (select max(order_date) from {{this}})
+{% endif %}

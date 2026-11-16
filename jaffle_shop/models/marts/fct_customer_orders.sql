@@ -1,6 +1,6 @@
 {{
     config(
-        materialized = 'table'
+        materialized = 'incremental'
     )
 }}
 
@@ -107,3 +107,7 @@ final as (
 )
 
 select * from final
+{% if is_incremental() %}
+    where order_placed_at > (select max(order_placed_at) from {{this}})
+{% endif %}
+order by order_placed_at desc
