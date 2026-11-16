@@ -1,0 +1,15 @@
+seeds:
+  - name: employees
+    description: "A seed file containing employee assignments"
+    config:
+      grants:
+        select: ['dbt_role','public']
+    columns:
+      - name: employee_id
+        description: "Unique identifer for each employee"
+        data_tests:
+          - unique
+          - not_null 
+      - name: customer_id 
+        description: "The unique identifier for each customer"
+      
