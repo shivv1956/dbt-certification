@@ -1,0 +1,11 @@
+macros:
+ - name: cents_to_dollars
+   description: "converts cents to dollars"
+   arguments:
+    - name: column_name
+      description: "The name of the column"
+      type: string
+    
+    - name: decimal 
+      description: "The precision descimal"
+      type: integer

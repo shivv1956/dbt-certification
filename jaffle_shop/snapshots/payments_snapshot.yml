@@ -1,0 +1,7 @@
+snapshots:
+  - name: payments_snapshot
+    relation: source('stripe', 'payments')
+    config:
+      unique_key: id
+      strategy: check
+      check_cols: ['orderid', 'paymentmethod', 'status', 'amount']

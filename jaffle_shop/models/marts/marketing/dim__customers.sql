@@ -8,11 +8,9 @@ with customers as (
 
 orders as (
 
-    select * from {{ ref('stg_jaffle_shop__orders') }}
+    -- one row per order, successful payments only
+    select * from {{ ref('fct_orders') }}
 
-),
-payments as (
-    select * from {{ref('stg_stripe__payments')}}
 ),
 
 employees as (
@@ -26,9 +24,8 @@ customer_orders as (
         min(order_date) as first_order_date,
         max(order_date) as most_recent_order_date,
         count(order_id) as number_of_orders,
-        sum(payment_amount) as amount_spent
+        sum(amount) as amount_spent
     from orders
-    JOIN payments p using (order_id)
     group by 1
 ),
 

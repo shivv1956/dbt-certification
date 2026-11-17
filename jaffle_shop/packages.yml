@@ -1,6 +1,6 @@
 packages:
-  - package: dbt-labs/codegen
-    version: 0.14.1
+  - git: https://github.com/dbt-labs/dbt-codegen.git
+    revision: 0.14.1
 
   - package: dbt-labs/audit_helper
     version: 0.14.0

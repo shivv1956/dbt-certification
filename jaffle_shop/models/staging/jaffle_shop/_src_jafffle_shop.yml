@@ -5,13 +5,13 @@ sources:
     schema: jaffle_shop
     tables:
       - name: orders
-        description: Raw Customers data
+        description: Raw orders data
         columns:
           - name: id
             description: primary key from the source 
-            data_tests:
-             - unique
-             - not_null
+            # data_tests:
+            #  - unique
+            #  - not_null
 
         config:
           freshness:

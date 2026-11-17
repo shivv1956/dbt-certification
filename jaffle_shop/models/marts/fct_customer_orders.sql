@@ -1,6 +1,8 @@
 {{
     config(
-        materialized = 'incremental'
+        materialized = 'incremental',
+        incremental_strategy = 'merge',
+        unique_key = 'order_id'
     )
 }}
 
@@ -108,6 +110,6 @@ final as (
 
 select * from final
 {% if is_incremental() %}
-    where order_placed_at > (select max(order_placed_at) from {{this}})
+    where order_placed_at >= (select max(t.order_placed_at) from {{ this }} as t)
 {% endif %}
 order by order_placed_at desc
